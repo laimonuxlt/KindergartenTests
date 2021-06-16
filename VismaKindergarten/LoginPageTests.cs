@@ -9,17 +9,23 @@ namespace VismaKindergarten
 {
     public class Tests
     {
+        IWebDriver chromeDriver;
 
         readonly string guardianLoginUrl = "https://barnehage.testaws.visma.com/SeleniumTestAutomation";
         readonly string employeeLoginUrl = "https://manage.barnehage.testaws.visma.com/SeleniumTestAutomation";
         readonly string guardian = "Laimonas Samalius";
         readonly string employee = "Laimonas Samalius";
-        readonly string warningGuardianIsRequired = "Feltet må fylles inn.";
+        readonly string wrnGuardianIsRequired = "Feltet må fylles inn.";
 
+        IWebElement btnLoginGuard => chromeDriver.FindElement(By.XPath("//button[@title='Sign in'  or @title='Logg inn']"));
 
+        IWebElement ddlGuardian => chromeDriver.FindElement(By.XPath("//select[@id='employee']"));
 
-        IWebDriver chromeDriver;
+        IWebElement warning => chromeDriver.FindElement(By.XPath("//kid-validation-message/span"));
 
+        IWebElement ddlEmployee => chromeDriver.FindElement(By.XPath("//*[@id='employee']"));
+
+        IWebElement btnLogin => chromeDriver.FindElement(By.XPath("//button[@class='btn green']"));
 
         [SetUp]
         public void Setup()
@@ -29,25 +35,20 @@ namespace VismaKindergarten
         }
 
         [Test]
-        public void LogInSelectedGuardian()
+        public void LogInAsGuardian()
 
         {
 
             chromeDriver.Navigate().GoToUrl(guardianLoginUrl);
 
-            chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
-
-
-            IWebElement ddlGuardian = chromeDriver.FindElement(By.XPath("//select[@id='employee']"));
+            chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);            
 
             SelectElement ddlSelection = new SelectElement(ddlGuardian);
 
-            ddlSelection.SelectByText(guardian);
-
-            IWebElement btnLogin = chromeDriver.FindElement(By.XPath("//button[@title='Sign in'  or @title='Logg inn']"));
+            ddlSelection.SelectByText(guardian);            
 
 
-            btnLogin.Click();
+            btnLoginGuard.Click();
 
             Thread.Sleep(1000);
 
@@ -61,23 +62,18 @@ namespace VismaKindergarten
 
         }
         [Test]
-        public void LogInWithoutSelectedGuardian()
+        public void LogInWithoutSelectingGuardian()
         {
 
             chromeDriver.Navigate().GoToUrl(guardianLoginUrl);
 
-            chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);            
 
-
-            IWebElement btnLogin = chromeDriver.FindElement(By.XPath("//button[@title='Sign in'  or  @title='Logg inn']"));
-
-            btnLogin.Click();
-
-            IWebElement warning = chromeDriver.FindElement(By.XPath("//kid-validation-message/span"));
+            btnLoginGuard.Click();            
 
             string displayedWarningText = warning.Text;
 
-            Assert.AreEqual(warningGuardianIsRequired, displayedWarningText);
+            Assert.AreEqual(wrnGuardianIsRequired, displayedWarningText);
 
         }
 
@@ -90,15 +86,12 @@ namespace VismaKindergarten
             chromeDriver.Navigate().GoToUrl(employeeLoginUrl);
 
             chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-
-
-            IWebElement ddlEmployee = chromeDriver.FindElement(By.XPath("//*[@id='employee']"));
+            
 
             SelectElement ddlSelection = new SelectElement(ddlEmployee);
 
             ddlSelection.SelectByText(employee);
-
-            IWebElement btnLogin = chromeDriver.FindElement(By.XPath("//button[@class='btn green']"));
+            
 
 
             btnLogin.Click();
@@ -119,15 +112,12 @@ namespace VismaKindergarten
             chromeDriver.Navigate().GoToUrl(employeeLoginUrl);
 
             chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-
-
-            IWebElement ddlEmployee = chromeDriver.FindElement(By.XPath("//*[@id='employee']"));
+            
 
             SelectElement ddlSelection = new SelectElement(ddlEmployee);
 
             ddlSelection.SelectByText(employee);
-
-            IWebElement btnLogin = chromeDriver.FindElement(By.XPath("//button[@class='btn green']"));
+          
 
             btnLogin.Click();
 
