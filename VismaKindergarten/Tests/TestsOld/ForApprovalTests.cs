@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using VismaKindergarten.Pages;
+using VismaKindergarten.Pages.AdminPages;
 
 namespace VismaKindergarten
 {
@@ -20,7 +22,7 @@ namespace VismaKindergarten
         readonly string employeeLoginUrl = "https://manage.barnehage.testaws.visma.com/SeleniumTestAutomation";
         readonly string employee = "Laimonas Samalius";
 
-        readonly string childDateOfBirth = "01.01.2020";        
+        readonly string childDateOfBirth = "01.01.2020";
         readonly string childName = "Web";
         readonly string childSurname = "Weber";
         readonly string childPostalCode = "7950 ABELVÆR";
@@ -29,7 +31,7 @@ namespace VismaKindergarten
         readonly string applicantSurname = "Augustin";
         readonly string applicantStreet = "Winter St 2020";
         readonly string applicantPostalCode = "7950 ABELVÆR";
-        readonly string applicantEmail = "august@test.com";
+        //readonly string applicantEmail = "august@test.com";
         readonly string coapplicantName = "May";
         readonly string coapplicantSurname = "Mayer";
         readonly string coapplicantStreet = "Spring St 2020";
@@ -93,14 +95,8 @@ namespace VismaKindergarten
 
         }
 
-        [Test]
-        public void IsAprovalPageDispalyed()
-        {
 
-            bool isTabDocumentationDisplayed = tabDocumentation.Displayed;
-            Assert.IsTrue(isTabDocumentationDisplayed);
 
-        }
 
         [Test]
         public void IsDocumetationTabDataDisplayedCorrecty()
@@ -194,7 +190,14 @@ namespace VismaKindergarten
 
         }
 
+        [Test]
+        public void ActivityLogTabRegisterEvent()
+        {
+            var activityLogTabPage = new ActivityLogTabPage(chromeDriver);
+            bool data = activityLogTabPage.IsActivityLogTabRegisteringEvents();
+            Assert.IsTrue(data);
 
+        }
 
 
         [TearDown]

@@ -7,19 +7,21 @@ using System.Threading;
 
 namespace VismaKindergarten
 {
-    public class Tests
+    public class TestsFotLogin
     {
         IWebDriver chromeDriver;
 
         readonly string guardianLoginUrl = "https://barnehage.testaws.visma.com/SeleniumTestAutomation";
         readonly string employeeLoginUrl = "https://manage.barnehage.testaws.visma.com/SeleniumTestAutomation";
+       //readonly string expectedUrl = "https://barnehage.testaws.visma.com/children/list";
+       //readonly string expectedEmloyeeUrl = "https://manage.barnehage.testaws.visma.com/children/list";
         readonly string guardian = "Laimonas Samalius";
         readonly string employee = "Laimonas Samalius";
         readonly string wrnGuardianIsRequired = "Feltet må fylles inn.";
 
-        IWebElement btnLoginGuard => chromeDriver.FindElement(By.XPath("//button[@title='Sign in'  or @title='Logg inn']"));
+        private IWebElement btnLoginGuard => chromeDriver.FindElement(By.XPath("//button[@title='Sign in'  or @title='Logg inn']"));
 
-        IWebElement ddlGuardian => chromeDriver.FindElement(By.XPath("//select[@id='employee']"));
+        private IWebElement ddlGuardian => chromeDriver.FindElement(By.XPath("//select[@id='employee']"));
 
         IWebElement warning => chromeDriver.FindElement(By.XPath("//kid-validation-message/span"));
 
@@ -31,6 +33,8 @@ namespace VismaKindergarten
         public void Setup()
         {
             chromeDriver = new ChromeDriver(@"C:\selenium-drivers");
+            chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+
 
         }
 
@@ -41,11 +45,11 @@ namespace VismaKindergarten
 
             chromeDriver.Navigate().GoToUrl(guardianLoginUrl);
 
-            chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);            
+            chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
 
             SelectElement ddlSelection = new SelectElement(ddlGuardian);
 
-            ddlSelection.SelectByText(guardian);            
+            ddlSelection.SelectByText(guardian);
 
 
             btnLoginGuard.Click();
@@ -67,9 +71,9 @@ namespace VismaKindergarten
 
             chromeDriver.Navigate().GoToUrl(guardianLoginUrl);
 
-            chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);            
+            chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
 
-            btnLoginGuard.Click();            
+            btnLoginGuard.Click();
 
             string displayedWarningText = warning.Text;
 
@@ -86,12 +90,12 @@ namespace VismaKindergarten
             chromeDriver.Navigate().GoToUrl(employeeLoginUrl);
 
             chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-            
+
 
             SelectElement ddlSelection = new SelectElement(ddlEmployee);
 
             ddlSelection.SelectByText(employee);
-            
+
 
 
             btnLogin.Click();
@@ -112,12 +116,11 @@ namespace VismaKindergarten
             chromeDriver.Navigate().GoToUrl(employeeLoginUrl);
 
             chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-            
 
-            SelectElement ddlSelection = new SelectElement(ddlEmployee);
 
-            ddlSelection.SelectByText(employee);
-          
+            //SelectElement ddlSelection = new SelectElement(ddlEmployee);
+
+            //ddlSelection.SelectByText(employee);
 
             btnLogin.Click();
 
@@ -125,10 +128,11 @@ namespace VismaKindergarten
 
             chromeDriver.Navigate().GoToUrl("https://manage.barnehage.testaws.visma.com/admission/application");
 
-
-
-
         }
+
+
+
+
 
         [TearDown]
         public void CloseBrowser()
@@ -138,6 +142,7 @@ namespace VismaKindergarten
 
 
     }
+
 
 
 }
