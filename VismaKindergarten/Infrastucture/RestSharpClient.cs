@@ -10,6 +10,9 @@ namespace VismaKindergarten.Infrastucture
     public interface IRequestClient
     {
         IRequest Post(string resourse);
+        IRequest Get(string resourse);
+
+        
     }
 
     public interface IRequest
@@ -21,9 +24,25 @@ namespace VismaKindergarten.Infrastucture
 
 
     }
-    public class RestClient
+    public class RestSharpClient: IRequestClient
     {
 
+         
+        public RestSharpClient()
+        {
+
+        }
+
+
+        public IRequest Post(string resourse)
+        {
+            return new RestSharpRequest(resourse, Method.POST);
+        }
+
+        public IRequest Get(string resourse)
+        {
+            return new RestSharpRequest(resourse, Method.GET);
+        }
     }
 
     public class RestSharpRequest : IRequest
@@ -52,7 +71,9 @@ namespace VismaKindergarten.Infrastucture
 
         public T As<T>()
         {
-            throw new NotImplementedException();
+
+           var response = RestApiHelper.Execute<T>(_restRequest);
+            return response.Data;
         }
 
     }
